@@ -41,5 +41,5 @@ model User {
   // DO NOT MODIFY //
   ///////////////////
 
-  // Additional fields can be added here:
+  tasks Task[]
 }
