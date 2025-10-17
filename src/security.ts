@@ -1,7 +1,7 @@
 /**
  * The list of all access permissions, granting access to pages and resources.
  */
-export const PERMISSIONS = ['manage-users', 'View-Secret'] as const;
+export const PERMISSIONS = ['manage-tasks', 'View-Secret'] as const;
 
 /**
  * The list of all access roles.
@@ -15,7 +15,7 @@ export const ROLES = ['admin', 'user'] as const;
  * Maps each user role to an array of permissions granted to that role.
  */
 export const ROLE_PERMISSION_MAP: Record<Role, Permission[]> = {
-  admin: ['manage-users', 'View-Secret'],
+  admin: ['manage-tasks', 'View-Secret'],
   user: [],
 };
 
