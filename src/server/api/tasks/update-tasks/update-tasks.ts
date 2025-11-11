@@ -1,17 +1,65 @@
+//Pulling from other servers/parts of code
 import { z } from 'zod/v4';
-import { prisma } from '../../../../../prisma/client';
 import { authorizedProcedure } from '../../trpc';
-import { TRPCError } from '@trpc/server';
+import { prisma, TaskStatus } from '../../../../../prisma/client';
+import { rethrowKnownPrismaError } from '@fhss-web-team/backend-utils';
 
-const updateTasksInput = z.null();
+//The kind of input that may be sent
+const updateTasksInput = z.object({
+  taskId: z.string(),
+  newTitle: z.optional(z.string()),
+  newDescription: z.optional(z.string()),
+  newStatus: z.optional(z.literal(Object.values(TaskStatus))),
+});
 
-const updateTasksOutput = z.void();
+//What will be returned
+const updateTasksOutput = z.object({
+  status: z.literal(Object.values(TaskStatus)),
+  id: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  title: z.string(),
+  description: z.string(),
+  completedAt: z.nullable(z.date()),
+  ownerId: z.string(),
+});
 
+//Security (Middleware)
 export const updateTasks = authorizedProcedure
-  .meta({ requiredPermissions: [] })
+  .meta({ requiredPermissions: ['manage-tasks'] })
   .input(updateTasksInput)
   .output(updateTasksOutput)
+  //The handler (does the work)
   .mutation(async opts => {
-    // Your logic goes here
-    throw new TRPCError({ code: 'NOT_IMPLEMENTED' });
+    try {
+      const oldTask = await prisma.task.findUniqueOrThrow({
+        where: { id: opts.input.taskId, ownerId: opts.ctx.userId },
+      });
+      //Status change = new completedAt
+      let calculatedCompletedAt: Date | null = oldTask.completedAt;
+      if (opts.input.newStatus) {
+        if (opts.input.newStatus != oldTask.status) {
+          if (opts.input.newStatus === 'Complete') {
+            calculatedCompletedAt = null;
+          }
+        }
+      }
+      //Update prisma with the new info
+      return await prisma.task.update({
+        where: {
+          id: oldTask.id,
+          ownerId: opts.ctx.userId,
+        },
+        data: {
+          title: opts.input.newTitle?.trim(),
+          description: opts.input.newDescription,
+          status: opts.input.newStatus,
+          completedAt: calculatedCompletedAt,
+        },
+      });
+      //Convert prisma errors to API errors
+    } catch (error) {
+      rethrowKnownPrismaError(error);
+      throw error;
+    }
   });
