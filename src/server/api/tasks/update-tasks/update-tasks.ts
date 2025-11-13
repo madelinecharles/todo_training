@@ -39,7 +39,12 @@ export const updateTasks = authorizedProcedure
       let calculatedCompletedAt: Date | null = oldTask.completedAt;
       if (opts.input.newStatus) {
         if (opts.input.newStatus != oldTask.status) {
+          //if we just switched task to complete
           if (opts.input.newStatus === 'Complete') {
+            calculatedCompletedAt = new Date();
+          }
+          //if we just switched task off complete
+          else if (oldTask.status === 'Complete') {
             calculatedCompletedAt = null;
           }
         }
