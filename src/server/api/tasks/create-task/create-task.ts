@@ -26,6 +26,7 @@ export const createTask = authorizedProcedure
       data: {
         title: opts.input.title,
         description: opts.input.description,
+        status: 'Incomplete',
         //ownerId comes from the logged in user
         ownerId: opts.ctx.userId,
       },

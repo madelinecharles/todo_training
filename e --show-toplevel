@@ -1,0 +1,4 @@
+[35msrc/app/app.routes.ts[m[36m:[m[32m27[m[36m:[m      //   canActivate: [permissionGuard<Permission>(['[1;31mview-secrets[m'])],
+[35msrc/app/layouts/default/default.layout.ts[m[36m:[m[32m25[m[36m:[m      { text: 'Admin', path: '/admin', requiredPermissions: ['[1;31mview-secrets[m'] },
+[35msrc/security.ts[m[36m:[m[32m6[m[36m:[mexport const PERMISSIONS = ['manage-tasks', '[1;31mview-secrets[m'] as const;
+[35msrc/security.ts[m[36m:[m[32m20[m[36m:[m  admin: ['[1;31mview-secrets[m', 'manage-tasks'],

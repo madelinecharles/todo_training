@@ -3,7 +3,7 @@ import { User } from '../prisma/client';
 /**
  * The list of all access permissions, granting access to pages and resources.
  */
-export const PERMISSIONS = ['manage-tasks', 'view-secret'] as const;
+export const PERMISSIONS = ['manage-tasks', 'view-secrets'] as const;
 
 /**
  * The list of all access roles.
@@ -17,7 +17,7 @@ export const ROLES = ['admin', 'user'] as const;
  * Maps each user role to an array of permissions granted to that role.
  */
 export const ROLE_PERMISSION_MAP: Record<Role, Permission[]> = {
-  admin: ['view-secret', 'manage-tasks'],
+  admin: ['view-secrets', 'manage-tasks'],
   user: ['manage-tasks'],
 };
 
