@@ -1,1 +1,11 @@
-<p>tasks works!</p>
+<section>
+  <!-- the list of tasks I got back from the server, if available. //tells Angular
+  how to identify each item in the loop  -->
+  @for (task of taskResource.value()?.data; track task.id) {
+  <div>
+    <!-- html created for each task -->
+    <h2>{{task.title}}</h2>
+    <p>{{task.description}}</p>
+  </div>
+  }
+</section>
