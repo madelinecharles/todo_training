@@ -1,5 +1,12 @@
+<mat-paginator
+  [length]="taskResource.value()?.totalCount"
+  [pageSize]="PAGE_SIZE"
+  (page)="handlePageEvent($event)"
+  [hidePageSize]="true"
+  [showFirstLastButtons]="true" />
+
 <section>
-  <!-- the list of tasks I got back from the server, if available. //tells Angular
+  <!-- the list of tasks I got back from the server, tells Angular
   how to identify each item in the loop  -->
   @for (task of taskResource.value()?.data; track task.id) {
   <div>
@@ -9,3 +16,13 @@
   </div>
   }
 </section>
+
+@if (taskResource.error()) {
+<p>Failed to retrieve tasks. Please try again.</p>
+<p>{{taskResource.error()?.message}}</p>
+<button (click)="taskResource.refresh()">Refresh</button>
+} @if (taskResource.isLoading()) {
+<div class="shade">
+  <mat-spinner />
+</div>
+}

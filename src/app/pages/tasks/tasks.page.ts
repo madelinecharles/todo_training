@@ -1,10 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { trpcResource } from '@fhss-web-team/frontend-utils';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-tasks',
-  imports: [],
+  imports: [MatPaginator, MatProgressSpinnerModule],
   templateUrl: './tasks.page.html',
   styleUrl: './tasks.page.scss',
 })
@@ -22,4 +24,8 @@ export class TasksPage {
     }),
     { autoRefresh: true }
   );
+
+  protected handlePageEvent(e: PageEvent) {
+    this.pageOffset.set(e.pageIndex * e.pageSize);
+  }
 }
