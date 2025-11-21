@@ -9,11 +9,9 @@
   <!-- the list of tasks I got back from the server, tells Angular
   how to identify each item in the loop  -->
   @for (task of taskResource.value()?.data; track task.id) {
-  <div>
-    <!-- html created for each task -->
-    <h2>{{task.title}}</h2>
-    <p>{{task.description}}</p>
-  </div>
+  <app-task-card
+    [initialTaskValue]="task"
+    (taskDeleted)="taskDeleted()"></app-task-card>
   }
 </section>
 
@@ -26,3 +24,7 @@
   <mat-spinner />
 </div>
 }
+
+<button (click)="openCreateDialog()" aria-label="Create task" mat-fab>
+  <mat-icon>add</mat-icon>
+</button>

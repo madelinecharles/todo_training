@@ -1,0 +1,25 @@
+<h3 mat-dialog-title>Create Task</h3>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="newTitle" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="newDescription"></textarea>
+  </mat-form-field>
+
+  @if (createTask.error()) {
+    <p class="error">Failed to save task, try again</p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button aria-label="cancel" (click)="cancel()">Cancel</button>
+  <button
+    mat-flat-button
+    aria-label="save"
+    (click)="save()"
+    [disabled]="newTitle().trim() === '' || newDescription().trim() === ''">
+    Save
+  </button>
+</mat-dialog-actions>
